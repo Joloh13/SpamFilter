@@ -1,0 +1,29 @@
+public class Test 
+{
+	public static void main(String[] args)throws FileNotFoundException, IOException {
+		Filter b = new Filter(args[1],args[2], args[3]);
+		b.spamIdentifier();
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println("Do you want to add to the existing database of keywords?");
+		System.out.println("Enter Y or N.");
+		String result = in.next();
+		if(result.equalsIgnoreCase("Y")){
+			System.out.println("Please enter the new bad word");
+			String bugger = in.next();
+			b.addKeywords(bugger);
+		}else{
+			System.out.println("Do you want to add to the existing blacklist?");
+			System.out.println("Enter Y or N.");
+			result = in.next();
+			if(result.equalsIgnoreCase("Y")){
+				System.out.println("Please enter the name of the offender");
+				String bugger = in.next();
+				b.addSender(bugger);
+			}
+		}
+		
+		System.out.println("Thank you for using my program!! <3");
+	}
+}
+	
