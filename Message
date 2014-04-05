@@ -1,0 +1,87 @@
+public class Message {
+
+	int MIN = 0;
+	String subjectLine = "";
+	String sender = "";
+	ArrayList<String> body = new ArrayList<String>();
+	BufferedReader br;
+	String[] components;
+	boolean spam;
+	
+
+	public Message(String filename) throws FileNotFoundException, IOException
+	{
+		spam = false;
+		br = new BufferedReader(new FileReader(filename));
+		String line = br.readLine();
+		while (line.equals("<END>") == false) 
+		{
+			try {
+					if (line.startsWith("From:")) 	
+					{
+						foundSender(line);
+					} 
+						else if (line.startsWith("Subject:")) 
+							{
+								foundSubject(line);
+							} 
+								else if (line.startsWith("MIN:")) 
+									{
+										foundMIN(line);
+									} 
+										else 
+										{
+											String words[] = line.split(" ");
+											for( int p = 0; p < words.length; p++){
+												body.add(words[p]);
+											}
+										}
+											line = br.readLine();
+				} 
+			catch (FileNotFoundException e) 
+				{
+					System.err.println("WAAAH!! FILE NOT FOUND!! :'(");
+				}
+		}
+		br.close();
+	}
+
+	public void foundSender(String s) 
+	{
+		s = s.replace("From:", "");
+		components = s.split("<");
+		sender = components[1].replace(">", "");
+	}
+
+	public void foundSubject(String m) 
+	{
+		m = m.replace("Subject:", "");
+		subjectLine = m;
+	}
+
+	public void foundMIN(String g) 
+	{
+		g = g.replace("MIN: <", "");
+		g = g.replace(">", "");
+		MIN = Integer.parseInt(g);
+	}
+	
+	public void debugPrint()
+	{
+		System.out.println("Sender = "+sender);
+		System.out.println("Subject = "+subjectLine);
+		System.out.println("MIN = "+MIN);
+		System.out.println("CHECK OUT MAH SEXAY BODEE = "+body.toString());
+	}
+
+	public int getMINvalue() 
+	{
+		return MIN;
+	}
+
+	public void setMINValue(int q) 
+	{
+		MIN = q;
+	}
+
+}
